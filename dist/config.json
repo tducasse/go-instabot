@@ -1,46 +1,46 @@
 {
     "user" : {
         "instagram" : {
-            "username" : "account's name",
-            "password" : "account's password"
+            "username" : "foobar",         
+            "password" : "fooBAR"          
         },
         "mail" : {
-            "from" : "address from where you want to send the notifications",
-            "password" : "password for this account",
-            "to" : "address to where you want to send the notifications",
-            "smtp" : "smtp address of the server ; for gmail, smtp.gmail.com:587",
-            "server" : "name of the server ; for gmail, smtp.gmail.com"
+            "from" : "foo@bar.foo",        
+            "password" : "foOb@r",          
+            "to" : "bar@foo.bar",           
+            "smtp" : "smtp.gmail.com:587",  
+            "server" : "smtp.gmail.com"     
         }
     },
-    "limits" : {
-        "like" : {
-            "min" : 0,
-            "max" : 10000
+    "limits" : {                            
+        "like" : {                          
+            "min" : 0,                      
+            "max" : 10000                   
         },
-        "comment" : {
-            "min" : 100,
-            "max" : 10000
+        "comment" : {                     
+            "min" : 100,                  
+            "max" : 10000                 
         },
-        "follow" : {
-            "min" : 200,
-            "max" : 10000
+        "follow" : {                        
+            "min" : 200,                    
+            "max" : 10000                   
         }
     },
-    "tags" : {
-        "dog" : {
+    "tags" : {                              
+        "dog" : {                           
+            "like" : 3,                     
+            "comment" : 2,                  
+            "follow" : 1                    
+        },
+        "cat" : {                           
             "like" : 3,
             "comment" : 2,
             "follow" : 1
-        },
-        "cat" : {
-            "like" : 3,
-            "comment" : 2,
-            "follow" : 1
-        }
+        }                                   
     },
-    "comments" : [
-        "awesome",
-        "wow",
-        "nice pic"
+    "comments" : [                          
+        "awesome",                          
+        "wow",                              
+        "nice pic"                          
     ]
 }
