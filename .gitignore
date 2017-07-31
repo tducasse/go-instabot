@@ -5,7 +5,7 @@
 *.dylib
 
 # Local files
-*.local
+local/
 
 # Log files
 *.log
