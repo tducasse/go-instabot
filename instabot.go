@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -16,21 +17,24 @@ import (
 )
 
 func main() {
-	// Comment the next section if you don't want to log events in a file
-	// ------------------------------ SECTION ------------------------------
-	// Opens a log file
-	t := time.Now()
-	logFile, err := os.OpenFile("instabot-"+t.Format("2006-01-02-15-04-05")+".log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
-	if err != nil {
-		panic(err)
+	// Parsing des options
+	noLog := flag.Bool("nolog", false, "Use this option to disable the log file")
+	flag.Parse()
+
+	// -nolog disables the log file
+	if !*noLog {
+		// Opens a log file
+		t := time.Now()
+		logFile, err := os.OpenFile("instabot-"+t.Format("2006-01-02-15-04-05")+".log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+		if err != nil {
+			panic(err)
+		}
+		defer logFile.Close()
+
+		// Duplicates the writer to stdout and logFile
+		mw := io.MultiWriter(os.Stdout, logFile)
+		log.SetOutput(mw)
 	}
-	defer logFile.Close()
-
-	// Duplicates the writer to stdout and logFile
-	mw := io.MultiWriter(os.Stdout, logFile)
-	log.SetOutput(mw)
-
-	// -------------------------------- END --------------------------------
 
 	// This is the config file
 	viper.SetConfigFile("./config/config.json")
