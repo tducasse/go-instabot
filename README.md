@@ -95,7 +95,7 @@ If you want to allow access anyway, follow these steps:
 As this procedure might not be safe, I recommend not doing it on your main Gmail account, and maybe create another account on the side. Or try to find a less secure webmail provider :stuck_out_tongue_winking_eye:
 
 ## How to run
-This is it! :simple_smile: You now have two options : 
+This is it! :smile: You now have two options : 
 1. Run it in the Go playground ; in a terminal, go to the folder where instabot.go is located, then execute `go run instabot.go`
 
 2. Build and install the script as a new command ; in a terminal, write `go install github.com/tducasse/go-instabot.go`. You now have the `go-instabot` command available from anywhere in your system. Just launch it in a terminal :smile:
