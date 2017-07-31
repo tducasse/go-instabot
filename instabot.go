@@ -16,6 +16,8 @@ import (
 )
 
 func main() {
+	// Comment the next section if you don't want to log events in a file
+	// ------------------------------ SECTION ------------------------------
 	// Opens a log file
 	t := time.Now()
 	logFile, err := os.OpenFile("instabot-"+t.Format("2006-01-02-15-04-05")+".log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
@@ -25,9 +27,10 @@ func main() {
 	defer logFile.Close()
 
 	// Duplicates the writer to stdout and logFile
-	// Comment the next 2 lines if you want the logs in the file only
 	mw := io.MultiWriter(os.Stdout, logFile)
 	log.SetOutput(mw)
+
+	// -------------------------------- END --------------------------------
 
 	// This is the config file
 	viper.SetConfigFile("./config/config.json")
