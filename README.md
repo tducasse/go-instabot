@@ -82,7 +82,7 @@ There, in the 'dist/' folder, you will find a sample 'config.json', that you hav
 
 ### Note on the emails
 
-I use Gmail to send and receive the emails. If you want to use Gmail, there's something important to do first (from the [Google accounts](https://support.google.com/accounts/answer/6010255) website):
+I use Gmail to send and receive the emails. If you want to use Gmail, there's something important to do first (from the [Google accounts](https://support.google.com/accounts/answer/6010255) website) :
 ```
 Change your settings to allow less secure apps to access your account.
 We don't recommend this option because it might make it easier for someone to break into your account.
