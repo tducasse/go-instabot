@@ -4,8 +4,8 @@
 *.so
 *.dylib
 
-# Config folder
-config/
+# Local files
+*.local
 
 # Log files
 *.log

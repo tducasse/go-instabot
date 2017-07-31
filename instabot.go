@@ -152,7 +152,7 @@ func main() {
 				if like {
 					log.Println("Liking the picture")
 					if !image.HasLiked {
-						//insta.Like(image.ID)
+						insta.Like(image.ID)
 						log.Println("Liked")
 						numLiked++
 						report[Report{tag, "like"}]++
@@ -163,7 +163,7 @@ func main() {
 							checkErr(err)
 							// If not following already
 							if !userFriendShip.Following {
-								//insta.Follow(poster.ID)
+								insta.Follow(poster.ID)
 								log.Println("Followed")
 								numFollowed++
 								report[Report{tag, "follow"}]++
@@ -175,7 +175,7 @@ func main() {
 						if comment {
 							rand.Seed(time.Now().Unix())
 							text := commentsList[rand.Intn(len(commentsList))]
-							//insta.Comment(image.ID, text)
+							insta.Comment(image.ID, text)
 							log.Println("Commented " + text)
 							numCommented++
 							report[Report{tag, "comment"}]++
