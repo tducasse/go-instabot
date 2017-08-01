@@ -1,9 +1,15 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Made with Golang](https://img.shields.io/badge/Made%20with-Golang-brightgreen.svg)](https://golang.org/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Made with: Golang](https://img.shields.io/badge/Made%20with-Golang-brightgreen.svg)](https://golang.org/)
 # What is go-instabot?
+
+The easiest way to boost your Instagram account and get likes and followers.
 
 Go-instabot automates following users, liking pictures, and commenting on Instagram. It uses the unofficial but excellent Go Instagram API, [goinsta](https://github.com/ahmdrz/goinsta).
 
 ![Instabot demo gif](/docs/instabot.gif)
+
+### Concept
+The idea behind the script is that when you like, follow, or comment something, it will draw the user's attention back to your own account. There's a hidden convention in Instagram, that will make people follow you back, as a way of saying "thank you" I guess.
+
 
 # How does it work?
 
@@ -12,19 +18,21 @@ Go-instabot automates following users, liking pictures, and commenting on Instag
 - It will decide (based on your settings) if it has to follow, like or comment.
 - At the end of the routine, an email will be sent, with a report on everything that's been done.
 
-The script is coded so that your Instagram account will not get banned (it waits between every call). Additionally, there is a retry mechanism in the eventuality that Instagram is too slow to answer (it can happen sometimes), and the script will wait for some time before trying again.
+The script is coded so that your Instagram account will not get banned ; it waits between every call to simulate human behavior.
+
+Additionally, there is a retry mechanism in the eventuality that Instagram is too slow to answer (it can happen sometimes), and the script will wait for some time before trying again.
 
 # How to use
 ## Installation
 
-First, you will need to [install Go](https://golang.org/doc/install) on your system.
+1. [Install Go](https://golang.org/doc/install) on your system.
 
-Once that's done, you have to download go-instabot, by executing this command in your terminal / cmd :
+2. Download go-instabot, by executing this command in your terminal / cmd :
 
-`go get github.com/tducasse/go-instabot`
+   `go get github.com/tducasse/go-instabot`
 
 ## Configuration
-
+### Config.json
 Go to the project folder :
 
 `cd [YOUR_GO_PATH]/src/github.com/tducasse/go-instabot`
@@ -92,18 +100,34 @@ If you want to allow access anyway, follow these steps:
 ```
 (If you can't find where it is exactly, I think [this link](https://myaccount.google.com/security) should work)
 
-As this procedure might not be safe, I recommend not doing it on your main Gmail account, and maybe create another account on the side. Or try to find a less secure webmail provider :stuck_out_tongue_winking_eye:
+As this procedure might not be safe, I recommend not doing it on your main Gmail account, and maybe create another account on the side. Or try to find a less secure webmail provider!
 
 ## How to run
-This is it! :smile: You now have two options : 
-1. Run it in the Go playground ; in a terminal, go to the folder where instabot.go is located, then execute `go run instabot.go`
+This is it! You now have two options : 
+1. Run it in the Go playground ; in a terminal, go to the folder where instabot.go is located, then execute :
 
-2. Build and install the script as a new command ; in a terminal, write `go install github.com/tducasse/go-instabot.go`. You now have the `go-instabot` command available from anywhere in your system. Just launch it in a terminal :smile:
+   `go run instabot.go`
+
+2. Build and install the script as a new command ; in a terminal, write :
+
+   `go install github.com/tducasse/go-instabot.go`
+
+   You now have the `go-instabot` command available from anywhere in your system. Just launch it in a terminal!
 
 ## Tips
-- Each time you will run the script, it will create a log file, where everything will be recorded. If you'd rather not have the logs and check everything directly in your terminal, there's actually an option for that. Run `go run instabot.go -nolog`, and it will only be printed on the screen.
+- Each time you will run the script, it will create a log file, where everything will be recorded.
+  If you'd rather not have the logs and check everything directly in your terminal, there's actually an option for that. Run :
+  
+  `go run instabot.go -nolog`
+  
+  and it will only be printed on the screen.
 - If you want to launch a long session, and you're afraid of closing the terminal, I recommend using the command __screen__.
-- If you have a Raspberry Pi, a web server, or anything similar, you can run the script there (again, using screen).
+- If you have a Raspberry Pi, a web server, or anything similar, you can run the script there (again, use screen).
+- To maximize your chances of getting new followers, don't spam! If you follow too many people, you will become irrelevant.
+
+  Also, try to use hashtags related to your own account : if you are a portrait photographer and you suddenly start following a thousand #cats related accounts, I doubt it will bring you back a thousand new followers...
+  
+Good luck!
 
 ### Donate
 If you like my work, feel free to donate!
