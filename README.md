@@ -12,14 +12,14 @@ Go-instabot automates following users, liking pictures, and commenting on Instag
 - It will decide (based on your settings) if it has to follow, like or comment.
 - At the end of the routine, an email will be sent, with a report on everything that's been done.
 
-The script is coded so that your Instagram account will not get banned (it waits between every call). Additionally, there is a retry mechanism in the eventuality Instagram is too slow to answer (it can happen sometimes), and the script will wait for some time before trying again.
+The script is coded so that your Instagram account will not get banned (it waits between every call). Additionally, there is a retry mechanism in the eventuality that Instagram is too slow to answer (it can happen sometimes), and the script will wait for some time before trying again.
 
 # How to use
 ## Installation
 
 First, you will need to [install Go](https://golang.org/doc/install) on your system.
 
-Once that done, you have to download go-instabot, by executing this command in your terminal / cmd :
+Once that's done, you have to download go-instabot, by executing this command in your terminal / cmd :
 
 `go get github.com/tducasse/go-instabot`
 
