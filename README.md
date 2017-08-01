@@ -104,11 +104,15 @@ As this procedure might not be safe, I recommend not doing it on your main Gmail
 
 ## How to run
 This is it! You now have two options : 
-1. Run it in the Go playground ; in a terminal, go to the folder where instabot.go is located, then execute :
+1. Run it in the Go playground
+
+   In a terminal, go to the folder where instabot.go is located, then execute :
 
    `go run instabot.go`
 
-2. Build and install the script as a new command ; in a terminal, write :
+2. Build and install the script as a new command
+
+   In a terminal, write :
 
    `go install github.com/tducasse/go-instabot.go`
 
@@ -127,7 +131,7 @@ This is it! You now have two options :
 
   Also, try to use hashtags related to your own account : if you are a portrait photographer and you suddenly start following a thousand #cats related accounts, I doubt it will bring you back a thousand new followers...
   
-Good luck!
+Good luck getting new followers!
 
 ### Donate
 If you like my work, feel free to donate!
