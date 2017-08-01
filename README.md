@@ -104,3 +104,9 @@ This is it! :smile: You now have two options :
 - Each time you will run the script, it will create a log file, where everything will be recorded. If you'd rather not have the logs and check everything directly in your terminal, there's actually an option for that. Run `go run instabot.go -nolog`, and it will only be printed on the screen.
 - If you want to launch a long session, and you're afraid of closing the terminal, I recommend using the command __screen__.
 - If you have a Raspberry Pi, a web server, or anything similar, you can run the script there (again, using screen).
+
+### Donate
+If you like my work, feel free to donate!
+
+- BTC : 1PN6TKgBXWmUDRQEmVNvqqPgacgJNndkVk
+- ETH : 0x2fFc531893072d17bC63263aC8e8AF9d9E76E751
