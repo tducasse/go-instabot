@@ -10,6 +10,8 @@ Go-instabot automates following users, liking pictures, and commenting on Instag
 ### Concept
 The idea behind the script is that when you like, follow, or comment something, it will draw the user's attention back to your own account. There's a hidden convention in Instagram, that will make people follow you back, as a way of saying "thank you" I guess.
 
+Moreover, you may have noticed that when you follow someone, Instagram tells you about 'similar people to follow'. The more active you are on Instagram, the more likely you are to be in this section.
+
 
 # How does it work?
 
