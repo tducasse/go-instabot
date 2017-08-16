@@ -6,6 +6,8 @@
 
 # Local files
 local/
+key
+session
 
 # Log files
 *.log
