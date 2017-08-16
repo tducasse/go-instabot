@@ -208,5 +208,4 @@ func buildReport() {
 
 	// Sends the report to the email in the config file, if the option is enabled
 	send(reportAsString, true)
-
 }
