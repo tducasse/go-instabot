@@ -122,6 +122,7 @@ Since you used the `go get` command, you now have the `go-instabot` executable a
 -logs : Use this option to enable the logfile. The script will continue writing everything on the screen, but it will also write it in a .log file.
 
 -nomail : Use this option to disable the email notifications.
+
 -sync : Use this option to unfollow users that don't follow you back. Don't worry, the script will ask before actually doing it, so you can use it just to check the number!
 
 ### Tips
