@@ -33,7 +33,7 @@ The first time it logs you in, it will store the session object in a file, encry
 
 1. [Install Go](https://golang.org/doc/install) on your system.
 
-2. Download go-instabot, by executing this command in your terminal / cmd :
+2. Download and install go-instabot, by executing this command in your terminal / cmd :
 
    `go get github.com/tducasse/go-instabot`
 
@@ -109,27 +109,16 @@ If you want to allow access anyway, follow these steps:
 As this procedure might not be safe, I recommend not doing it on your main Gmail account, and maybe create another account on the side. Or try to find a less secure webmail provider!
 
 ## How to run
-This is it! You now have two options : 
-1. Run it in the Go playground
+This is it!
+Since you used the `go get` command, you now have the `go-instabot` executable available from anywhere in your system. Just launch it in a terminal!
 
-   In a terminal, go to the folder where instabot.go is located, then execute :
+### Options
+-h : Use this option to display the list of options.
+-dev : Use this option to use the script in development mode : nothing will be done for real. You will need to put a config file in a 'local' folder.
+-logs : Use this option to enable the logfile. The script will continue writing everything on the screen, but it will also write it in a .log file.
+-nomail : Use this option to disable the email notifications.
 
-   `go run *.go`
-
-2. Build and install the script as a new command (Recommended)
-
-   In a terminal, write :
-
-   `go install github.com/tducasse/go-instabot`
-
-   You now have the `go-instabot` command available from anywhere in your system. Just launch it in a terminal!
-
-## Options
-- -dev : Use this option to use the script in development mode : nothing will be done for real. You will need to put a config file in a 'local' folder.
-- -logs : Use this option to enable the logfile. The script will continue writing everything on the screen, but it will also write it in a .log file.
-- -nomail : Use this option to disable the email notifications.
-
-## Tips
+### Tips
 - If you want to launch a long session, and you're afraid of closing the terminal, I recommend using the command __screen__.
 - If you have a Raspberry Pi, a web server, or anything similar, you can run the script on it (again, use screen).
 - To maximize your chances of getting new followers, don't spam! If you follow too many people, you will become irrelevant.
