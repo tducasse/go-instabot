@@ -115,15 +115,15 @@ This is it!
 Since you used the `go get` command, you now have the `go-instabot` executable available from anywhere in your system. Just launch it in a terminal!
 
 ### Options
--h : Use this option to display the list of options.
+**-h** : Use this option to display the list of options.
 
--dev : Use this option to use the script in development mode : nothing will be done for real. You will need to put a config file in a 'local' folder.
+**-dev** : Use this option to use the script in development mode : nothing will be done for real. You will need to put a config file in a 'local' folder.
 
--logs : Use this option to enable the logfile. The script will continue writing everything on the screen, but it will also write it in a .log file.
+**-logs** : Use this option to enable the logfile. The script will continue writing everything on the screen, but it will also write it in a .log file.
 
--nomail : Use this option to disable the email notifications.
+**-nomail** : Use this option to disable the email notifications.
 
--sync : Use this option to unfollow users that don't follow you back. Don't worry, the script will ask before actually doing it, so you can use it just to check the number!
+**-sync** : Use this option to unfollow users that don't follow you back. Don't worry, the script will ask before actually doing it, so you can use it just to check the number!
 
 ### Tips
 - If you want to launch a long session, and you're afraid of closing the terminal, I recommend using the command __screen__.
