@@ -3,7 +3,9 @@
 
 The easiest way to boost your Instagram account and get likes and followers.
 
-Go-instabot automates following users, liking pictures, and commenting on Instagram. It uses the unofficial but excellent Go Instagram API, [goinsta](https://github.com/ahmdrz/goinsta).
+Go-instabot automates following users, liking pictures, commenting, and unfollowing people that don't follow you back on Instagram.
+
+It uses the unofficial but excellent Go Instagram API, [goinsta](https://github.com/ahmdrz/goinsta).
 
 ![Instabot demo gif](/docs/instabot.gif)
 
@@ -117,6 +119,7 @@ Since you used the `go get` command, you now have the `go-instabot` executable a
 -dev : Use this option to use the script in development mode : nothing will be done for real. You will need to put a config file in a 'local' folder.
 -logs : Use this option to enable the logfile. The script will continue writing everything on the screen, but it will also write it in a .log file.
 -nomail : Use this option to disable the email notifications.
+-sync : Use this option to unfollow users that don't follow you back. Don't worry, the script will ask before actually doing it, so you can use it just to check the number!
 
 ### Tips
 - If you want to launch a long session, and you're afraid of closing the terminal, I recommend using the command __screen__.
