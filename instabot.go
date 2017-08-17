@@ -7,6 +7,10 @@ func main() {
 	getConfig()
 	// Tries to login
 	login()
-	// Loop through tags ; follows, likes, and comments, according to the config file
-	loopTags()
+	if *unfollow {
+		syncFollowers()
+	} else if *run {
+		// Loop through tags ; follows, likes, and comments, according to the config file
+		loopTags()
+	}
 }

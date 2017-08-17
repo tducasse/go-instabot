@@ -19,6 +19,12 @@ var dev *bool
 // Whether we want an email to be sent when the script ends / crashes
 var nomail *bool
 
+// Whether we want to launch the unfollow mode
+var unfollow *bool
+
+// Acut
+var run *bool
+
 // An image will be liked if the poster has more followers than likeLowerLimit, and less than likeUpperLimit
 var likeLowerLimit int
 var likeUpperLimit int
@@ -67,9 +73,12 @@ func check(err error) {
 
 // Parses the options given to the script
 func parseOptions() {
+	run = flag.Bool("run", false, "Use this option to follow, like and comment")
+	unfollow = flag.Bool("sync", false, "Use this option to unfollow those who are not following back")
+	nomail = flag.Bool("nomail", false, "Use this option to disable the email notifications")
 	dev = flag.Bool("dev", false, "Use this option to use the script in development mode : nothing will be done for real")
 	logs := flag.Bool("logs", false, "Use this option to enable the logfile")
-	nomail = flag.Bool("nomail", false, "Use this option to disable the email notifications")
+
 	flag.Parse()
 
 	// -logs enables the log file

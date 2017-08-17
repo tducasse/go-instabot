@@ -1,11 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/ahmdrz/goinsta"
@@ -22,6 +25,52 @@ func login() {
 	if err != nil {
 		createAndSaveSession()
 	}
+}
+
+func syncFollowers() {
+	following, err := insta.SelfTotalUserFollowing()
+	check(err)
+	followers, err := insta.SelfTotalUserFollowers()
+	check(err)
+
+	var users []response.User
+	for _, user := range following.Users {
+		if !contains(followers.Users, user) {
+			users = append(users, user)
+		}
+	}
+	fmt.Printf("\n%d users are not following you back!\n", len(users))
+	answer := getInput("Do you want to unfollow these users? [yN]")
+	if answer != "y" {
+		fmt.Println("Not unfollowing.")
+		os.Exit(0)
+	}
+	for _, user := range users {
+		fmt.Printf("Unfollowing %s\n", user.Username)
+		if !*dev {
+			insta.UnFollow(user.ID)
+		}
+		time.Sleep(6 * time.Second)
+	}
+}
+
+func getInput(text string) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Printf(text)
+
+	input, err := reader.ReadString('\n')
+	check(err)
+	return strings.TrimSpace(input)
+}
+
+// Checks if the user is in the slice
+func contains(slice []response.User, user response.User) bool {
+	for _, currentUser := range slice {
+		if currentUser == user {
+			return true
+		}
+	}
+	return false
 }
 
 // Logins and saves the session
