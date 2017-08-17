@@ -14,15 +14,19 @@ Moreover, you may have noticed that when you follow someone, Instagram tells you
 
 
 # How does it work?
-
+## Algorithm
 - There is a config file, where you can enter hashtags, and for each hashtag, how many likes, comments, and follows you want.
 - The script will then fetch pictures from the 'explore by tags' page on Instagram, using the API.
 - It will decide (based on your settings) if it has to follow, like or comment.
-- At the end of the routine, an email will be sent, with a report on everything that's been done.
-
-The script is coded so that your Instagram account will not get banned ; it waits between every call to simulate human behavior.
+- At the end of the routine, an email can be sent, with a report on everything that's been done.
 
 Additionally, there is a retry mechanism in the eventuality that Instagram is too slow to answer (it can happen sometimes), and the script will wait for some time before trying again.
+
+## Bans
+The script is coded so that your Instagram account will not get banned ; it waits between every call to simulate human behavior.
+
+The first time it logs you in, it will store the session object in a file, encrypted with AES (thanks to [goinsta](https://github.com/ahmdrz/goinsta)). Every next launch will try to recover the session instead of logging in again. This is a trick to avoid getting banned for connecting on too many devices (as suggested by [anastalaz](https://github.com/anastalaz)).
+
 
 # How to use
 ## Installation
@@ -110,25 +114,24 @@ This is it! You now have two options :
 
    In a terminal, go to the folder where instabot.go is located, then execute :
 
-   `go run instabot.go`
+   `go run *.go`
 
-2. Build and install the script as a new command
+2. Build and install the script as a new command (Recommended)
 
    In a terminal, write :
 
-   `go install github.com/tducasse/go-instabot.go`
+   `go install github.com/tducasse/go-instabot`
 
    You now have the `go-instabot` command available from anywhere in your system. Just launch it in a terminal!
 
+## Options
+- -dev : Use this option to use the script in development mode : nothing will be done for real. You will need to put a config file in a 'local' folder.
+- -logs : Use this option to enable the logfile. The script will continue writing everything on the screen, but it will also write it in a .log file.
+- -nomail : Use this option to disable the email notifications.
+
 ## Tips
-- Each time you will run the script, it will create a log file, where everything will be recorded.
-  If you'd rather not have the logs and check everything directly in your terminal, there's actually an option for that. Run :
-  
-  `go run instabot.go -nolog`
-  
-  and it will only be printed on the screen.
 - If you want to launch a long session, and you're afraid of closing the terminal, I recommend using the command __screen__.
-- If you have a Raspberry Pi, a web server, or anything similar, you can run the script there (again, use screen).
+- If you have a Raspberry Pi, a web server, or anything similar, you can run the script on it (again, use screen).
 - To maximize your chances of getting new followers, don't spam! If you follow too many people, you will become irrelevant.
 
   Also, try to use hashtags related to your own account : if you are a portrait photographer and you suddenly start following a thousand #cats related accounts, I doubt it will bring you back a thousand new followers...
