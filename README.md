@@ -116,7 +116,7 @@ Since you used the `go get` command, you now have the `go-instabot` executable a
 
 `go-instabot -run`
 
-**\*** : Note that you will need to have a folder named 'config' (with a 'config.json' file) in the directory where you launch it.
+**\*** : *You will need to have a folder named 'config' (with a 'config.json' file) in the directory where you launch it.*
 
 ### Options
 **-run** : This is the main option. Use it to actually launch the script.
