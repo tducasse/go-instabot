@@ -112,9 +112,13 @@ As this procedure might not be safe, I recommend not doing it on your main Gmail
 
 ## How to run
 This is it!
-Since you used the `go get` command, you now have the `go-instabot` executable available from anywhere in your system. Just launch it in a terminal!
+Since you used the `go get` command, you now have the `go-instabot` executable available from anywhere in your system. Just launch it in a terminal :
+
+`go-instabot -run`
 
 ### Options
+**-run** : This is the main option. Use it to actually launch the script.
+
 **-h** : Use this option to display the list of options.
 
 **-dev** : Use this option to use the script in development mode : nothing will be done for real. You will need to put a config file in a 'local' folder.
