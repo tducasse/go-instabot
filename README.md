@@ -25,7 +25,7 @@ Additionally, there is a retry mechanism in the eventuality that Instagram is to
 ## Bans
 The script is coded so that your Instagram account will not get banned ; it waits between every call to simulate human behavior.
 
-The first time it logs you in, it will store the session object in a file, encrypted with AES (thanks to [goinsta](https://github.com/ahmdrz/goinsta)). Every next launch will try to recover the session instead of logging in again. This is a trick to avoid getting banned for connecting on too many devices (as suggested by [anastalaz](https://github.com/anastalaz)).
+The first time it logs you in, it will store the session object in a file, encrypted with AES (thanks to [goinsta](https://github.com/ahmdrz/goinsta)). Every next launch will try to recover the session instead of logging in again. This is a trick to avoid getting banned for connecting on too many devices (as suggested by [anastalaz](https://github.com/tducasse/go-instabot/issues/1)).
 
 
 # How to use
