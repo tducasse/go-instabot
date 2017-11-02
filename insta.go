@@ -13,6 +13,7 @@ import (
 
 	"github.com/ahmdrz/goinsta"
 	"github.com/ahmdrz/goinsta/response"
+	"github.com/ahmdrz/goinsta/store"
 	"github.com/spf13/viper"
 )
 
@@ -80,7 +81,7 @@ func createAndSaveSession() {
 	check(err)
 
 	key := createKey()
-	bytes, err := insta.Export(key)
+	bytes, err := store.Export(insta, key)
 	check(err)
 	err = ioutil.WriteFile("session", bytes, 0644)
 	check(err)
@@ -100,7 +101,7 @@ func reloadSession() error {
 	key, err := ioutil.ReadFile("key")
 	check(err)
 
-	insta, err = goinsta.Import(session, key)
+	insta, err = store.Import(session, key)
 	if err != nil {
 		return errors.New("Couldn't recover the session")
 	}
