@@ -140,8 +140,3 @@ Since you used the `go get` command, you now have the `go-instabot` executable a
   
 Good luck getting new followers!
 
-### Donate
-If you like my work, feel free to donate!
-
-- BTC : 1PN6TKgBXWmUDRQEmVNvqqPgacgJNndkVk
-- ETH : 0x2fFc531893072d17bC63263aC8e8AF9d9E76E751
