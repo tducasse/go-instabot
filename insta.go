@@ -170,6 +170,11 @@ func goThrough(images response.TagFeedsResponse) {
 			break
 		}
 
+		// Skip our own images
+		if image.User.Username == viper.GetString("user.instagram.username") {
+			continue
+		}
+
 		// Getting the user info
 		// Instagram will return a 500 sometimes, so we will retry 10 times.
 		// Check retry() for more info.
