@@ -17,6 +17,12 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	// MaxRetriesPerTag - Defines how often we should fetch images for tags again, if there weren't
+	// enough images to finish all like, comment, and follow jobs.
+	MaxRetriesPerTag = 2
+)
+
 // Insta is a goinsta.Instagram instance
 var insta *goinsta.Instagram
 
@@ -144,8 +150,10 @@ func loopTags() {
 
 // Browses the page for a certain tag, until we reach the limits
 func browse() {
+	var i = 0
 	for numFollowed < limits["follow"] || numLiked < limits["like"] || numCommented < limits["comment"] {
 		log.Println("Fetching the list of images for #" + tag + "\n")
+		i++
 
 		// Getting all the pictures we can on the first page
 		// Instagram will return a 500 sometimes, so we will retry 10 times.
@@ -159,11 +167,16 @@ func browse() {
 
 		goThrough(images)
 
+		if i > MaxRetriesPerTag {
+			log.Println("Currently not enough images for this tag to achieve goals")
+			break
+		}
 	}
 }
 
 // Goes through all the images for a certain tag
 func goThrough(images response.TagFeedsResponse) {
+	var i = 1
 	for _, image := range images.FeedsResponse.Items {
 		// Exiting the loop if there is nothing left to do
 		if numFollowed >= limits["follow"] && numLiked >= limits["like"] && numCommented >= limits["comment"] {
@@ -173,6 +186,11 @@ func goThrough(images response.TagFeedsResponse) {
 		// Skip our own images
 		if image.User.Username == viper.GetString("user.instagram.username") {
 			continue
+		}
+
+		// Check if we should fetch new images for tag
+		if i >= limits["follow"] && i >= limits["like"] && i >= limits["comment"] {
+			break
 		}
 
 		// Getting the user info
@@ -192,6 +210,7 @@ func goThrough(images response.TagFeedsResponse) {
 
 		log.Println("Checking followers for " + poster.Username + " - for #" + tag)
 		log.Printf("%s has %d followers\n", poster.Username, followerCount)
+		i++
 
 		// Will only follow and comment if we like the picture
 		like := followerCount > likeLowerLimit && followerCount < likeUpperLimit && numLiked < limits["like"]
