@@ -161,7 +161,7 @@ func browse() {
 
 		goThrough(images)
 
-		if i > viper.GetInt("limits.maxRetry") {
+		if viper.IsSet("limits.maxRetry") && i > viper.GetInt("limits.maxRetry") {
 			log.Println("Currently not enough images for this tag to achieve goals")
 			break
 		}

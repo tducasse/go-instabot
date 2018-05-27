@@ -13,7 +13,6 @@
         }
     },
     "limits" : {                            
-	"maxRetry" : 2,
         "like" : {                          
             "min" : 0,                      
             "max" : 10000                   
