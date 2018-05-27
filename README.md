@@ -63,6 +63,7 @@ There, in the 'dist/' folder, you will find a sample 'config.json', that you hav
         }
     },
     "limits" : {                            // this sets when the script will choose to do something
+        "maxRetry" : 2                      // OPTIONAL: Maximum number of times th script will go through the same tag
         "like" : {                          // the script will like a picture only if :
             "min" : 0,                      //      - the user has more than 0 followers
             "max" : 10000                   //      - the user has less than 10000 followers  
