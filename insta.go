@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ahmdrz/goinsta"
-	"github.com/ahmdrz/goinsta/response"
-	"github.com/ahmdrz/goinsta/store"
 	"github.com/spf13/viper"
+	"github.com/tducasse/goinsta"
+	"github.com/tducasse/goinsta/response"
+	"github.com/tducasse/goinsta/store"
 )
 
 // Insta is a goinsta.Instagram instance
