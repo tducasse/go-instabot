@@ -108,6 +108,12 @@ func getConfig() {
 		log.Fatalf("Error reading config file, %s", err)
 	}
 
+	// Check enviroment
+	viper.SetEnvPrefix("instabot")
+	replacer := strings.NewReplacer(".", "_")
+	viper.SetEnvKeyReplacer(replacer)
+	viper.AutomaticEnv()
+
 	// Confirms which config file is used
 	log.Printf("Using config: %s\n\n", viper.ConfigFileUsed())
 
