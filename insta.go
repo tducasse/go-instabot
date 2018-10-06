@@ -211,14 +211,28 @@ func goThrough(images response.TagFeedsResponse) {
 		follow := followerCount > followLowerLimit && followerCount < followUpperLimit && numFollowed < limits["follow"] && like
 		comment := followerCount > commentLowerLimit && followerCount < commentUpperLimit && numCommented < limits["comment"] && like
 
-		// Like, then comment/follow
-		if like {
-			likeImage(image)
-			if follow {
-				followUser(posterInfo)
+		// Checking if we are already following current user and skipping if we do
+		skip := false
+		following, err := insta.SelfTotalUserFollowing()
+		check(err)
+
+		for _, user := range following.Users {
+			if user.Username == poster.Username {
+				skip = true
+				break
 			}
-			if comment {
-				commentImage(image)
+		}
+
+		// Like, then comment/follow
+		if !skip {
+			if like {
+				likeImage(image)
+				if follow {
+					followUser(posterInfo)
+				}
+				if comment {
+					commentImage(image)
+				}
 			}
 		}
 		log.Printf("%s done\n\n", poster.Username)
