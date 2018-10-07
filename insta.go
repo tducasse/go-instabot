@@ -318,3 +318,16 @@ func followUser(userInfo response.GetUsernameResponse) {
 		log.Println("Already following " + user.Username)
 	}
 }
+
+func updateConfig() {
+	viper.Set("whitelist", userWhitelist)
+	viper.Set("blacklist", userBlacklist)
+
+	err := viper.WriteConfig()
+	if err != nil {
+		log.Println("Update config file error", err)
+		return
+	}
+
+	log.Println("Config file updated")
+}

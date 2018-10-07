@@ -13,4 +13,5 @@ func main() {
 		// Loop through tags ; follows, likes, and comments, according to the config file
 		loopTags()
 	}
+	updateConfig()
 }
