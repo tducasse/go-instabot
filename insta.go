@@ -36,17 +36,35 @@ func syncFollowers() {
 
 	var users []response.User
 	for _, user := range following.Users {
-		if !contains(followers.Users, user) {
+		// Skip whitelisted users.
+		if containsString(userWhitelist, user.Username) {
+			continue
+		}
+
+		if !containsUser(followers.Users, user) {
 			users = append(users, user)
 		}
 	}
+
+	if len(users) == 0 {
+		return
+	}
+
 	fmt.Printf("\n%d users are not following you back!\n", len(users))
-	answer := getInput("Do you want to unfollow these users? [yN]")
+	answer := getInput("Do you want to review these users ? [yN]")
 	if answer != "y" {
 		fmt.Println("Not unfollowing.")
 		os.Exit(0)
 	}
+
 	for _, user := range users {
+		answerUserUnfollow := getInputf("Unfollow %s ? [yN]", user.Username)
+		if answerUserUnfollow != "y" {
+			userWhitelist = append(userWhitelist, user.Username)
+			continue
+		}
+		userBlacklist = append(userBlacklist, user.Username)
+
 		fmt.Printf("Unfollowing %s\n", user.Username)
 		if !*dev {
 			insta.UnFollow(user.ID)
@@ -56,16 +74,29 @@ func syncFollowers() {
 }
 
 func getInput(text string) string {
+	return getInputf(text)
+}
+
+func getInputf(format string, args ...interface{}) string {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf(text)
+	fmt.Printf(format, args...)
 
 	input, err := reader.ReadString('\n')
 	check(err)
 	return strings.TrimSpace(input)
 }
 
+func containsUser(slice []response.User, user response.User) bool {
+	for _, currentUser := range slice {
+		if currentUser == user {
+			return true
+		}
+	}
+	return false
+}
+
 // Checks if the user is in the slice
-func contains(slice []response.User, user response.User) bool {
+func containsString(slice []string, user string) bool {
 	for _, currentUser := range slice {
 		if currentUser == user {
 			return true
@@ -227,7 +258,7 @@ func goThrough(images response.TagFeedsResponse) {
 		if !skip {
 			if like {
 				likeImage(image)
-				if follow {
+				if follow && !containsString(userBlacklist, poster.Username) {
 					followUser(posterInfo)
 				}
 				if comment {
