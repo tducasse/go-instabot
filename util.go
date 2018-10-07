@@ -64,6 +64,9 @@ var numCommented int
 // Will hold the tag value
 var tag string
 
+var userBlacklist []string
+var userWhitelist []string
+
 // check will log.Fatal if err is an error
 func check(err error) {
 	if err != nil {
@@ -129,6 +132,9 @@ func getConfig() {
 	tagsList = viper.GetStringMap("tags")
 
 	commentsList = viper.GetStringSlice("comments")
+
+	userBlacklist = viper.GetStringSlice("blacklist")
+	userWhitelist = viper.GetStringSlice("whitelist")
 
 	type Report struct {
 		Tag, Action string
