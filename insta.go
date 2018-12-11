@@ -57,12 +57,17 @@ func syncFollowers() {
 		os.Exit(0)
 	}
 
+	answerUnfollowAll := getInput("Unfollow everyone ? [yN]")
+
 	for _, user := range users {
-		answerUserUnfollow := getInputf("Unfollow %s ? [yN]", user.Username)
-		if answerUserUnfollow != "y" {
-			userWhitelist = append(userWhitelist, user.Username)
-			continue
+		if answerUnfollowAll != "y" {
+			answerUserUnfollow := getInputf("Unfollow %s ? [yN]", user.Username)
+			if answerUserUnfollow != "y" {
+				userWhitelist = append(userWhitelist, user.Username)
+				continue
+			}
 		}
+
 		userBlacklist = append(userBlacklist, user.Username)
 
 		fmt.Printf("Unfollowing %s\n", user.Username)
