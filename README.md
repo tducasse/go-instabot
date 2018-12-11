@@ -93,7 +93,19 @@ There, in the 'dist/' folder, you will find a sample 'config.json', that you hav
         "awesome",                          // again, add as many as you want
         "wow",                              // it will randomly choose one 
         "nice pic"                          // each time it has to put a comment
-    ]
+    ],
+    "blacklist" : [                         // the script will take list of blacklisted usernames and use it to
+        "lorem23",                          // ignore following a user upon like -> follow action.
+        "i_psum56",                         // it will prompt whether to blacklist users upon synchronizing
+        "dolor.gg3",                        // followers action.
+        "sit99"                             // List will be updated at the end of script run.
+    ],
+    "whitelist" : [                         // the script will take list of whitelisted usernames and use it to
+        "a.met0",                           // ignore unfollowing a user upon synchronizing followers action.
+        "consec_tetur1",                    // it will implicitly add user to whitelist if you were to answer "No" (N)
+        "adipic1s1ng",                      // upon the prompt for unfollowing  user of synchronizing followers action.
+        "3lit_00"                           // List will be updated at the end of script run.
+    ]                                       // List might become obsolete as username is easily changeable by user.
 }
 ```
 
