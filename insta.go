@@ -192,7 +192,7 @@ func goThrough(images response.TagFeedsResponse) {
 		// Check retry() for more info.
 		var posterInfo response.GetUsernameResponse
 		err := retry(10, 20*time.Second, func() (err error) {
-			posterInfo, err = insta.GetUserByID(image.User.ID)
+			posterInfo, err = insta.GetUserByUsername(image.User.Username)
 			return
 		})
 		check(err)
