@@ -20,6 +20,9 @@ import (
 // Insta is a goinsta.Instagram instance
 var insta *goinsta.Instagram
 
+// Storing user in session
+var checkedUser = make(map[string]bool)
+
 // login will try to reload a previous session, and will create a new one if it can't
 func login() {
 	err := reloadSession()
@@ -187,6 +190,11 @@ func goThrough(images response.TagFeedsResponse) {
 			break
 		}
 
+		// Skip checked user if the flag is turned on
+		if checkedUser[image.User.Username] && *noduplicate {
+			continue
+		}
+
 		// Getting the user info
 		// Instagram will return a 500 sometimes, so we will retry 10 times.
 		// Check retry() for more info.
@@ -202,6 +210,7 @@ func goThrough(images response.TagFeedsResponse) {
 
 		buildLine()
 
+		checkedUser[poster.Username] = true
 		log.Println("Checking followers for " + poster.Username + " - for #" + tag)
 		log.Printf("%s has %d followers\n", poster.Username, followerCount)
 		i++

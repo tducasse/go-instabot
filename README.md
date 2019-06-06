@@ -133,6 +133,8 @@ Since you used the `go get` command, you now have the `go-instabot` executable a
 
 **-sync** : Use this option to unfollow users that don't follow you back. Don't worry, the script will ask before actually doing it, so you can use it just to check the number!
 
+**-noduplicate** : Use this to skip following, liking and commenting same user in this session!
+
 ### Tips
 - If you want to launch a long session, and you're afraid of closing the terminal, I recommend using the command __screen__.
 - If you have a Raspberry Pi, a web server, or anything similar, you can run the script on it (again, use screen).

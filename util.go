@@ -64,6 +64,9 @@ var numCommented int
 // Will hold the tag value
 var tag string
 
+// Whether it will check for duplicate profile in session
+var noduplicate *bool
+
 // check will log.Fatal if err is an error
 func check(err error) {
 	if err != nil {
@@ -78,6 +81,7 @@ func parseOptions() {
 	nomail = flag.Bool("nomail", false, "Use this option to disable the email notifications")
 	dev = flag.Bool("dev", false, "Use this option to use the script in development mode : nothing will be done for real")
 	logs := flag.Bool("logs", false, "Use this option to enable the logfile")
+	noduplicate = flag.Bool("noduplicate", false, "Use this option to skip following, liking and commenting same user in this session")
 
 	flag.Parse()
 
