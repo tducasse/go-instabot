@@ -48,7 +48,7 @@ func syncFollowers() {
 	}
 	for _, user := range users {
 		fmt.Printf("Unfollowing %s\n", user.Username)
-		if !*dev {
+		if !dev {
 			insta.UnFollow(user.ID)
 		}
 		time.Sleep(6 * time.Second)
@@ -246,7 +246,7 @@ func goThrough(images response.TagFeedsResponse) {
 func likeImage(image response.MediaItemResponse) {
 	log.Println("Liking the picture")
 	if !image.HasLiked {
-		if !*dev {
+		if !dev {
 			insta.Like(image.ID)
 		}
 		log.Println("Liked")
@@ -261,7 +261,7 @@ func likeImage(image response.MediaItemResponse) {
 func commentImage(image response.MediaItemResponse) {
 	rand.Seed(time.Now().Unix())
 	text := commentsList[rand.Intn(len(commentsList))]
-	if !*dev {
+	if !dev {
 		insta.Comment(image.ID, text)
 	}
 	log.Println("Commented " + text)
@@ -277,7 +277,7 @@ func followUser(userInfo response.GetUsernameResponse) {
 	check(err)
 	// If not following already
 	if !userFriendShip.Following {
-		if !*dev {
+		if !dev {
 			insta.Follow(user.ID)
 		}
 		log.Println("Followed")
