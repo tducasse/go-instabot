@@ -13,17 +13,25 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Whether we are in development mode or not
-var dev *bool
+var (
+	// Whether we are in development mode or not
+	dev bool
 
-// Whether we want an email to be sent when the script ends / crashes
-var nomail *bool
+	// Whether we want an email to be sent when the script ends / crashes
+	nomail bool
 
-// Whether we want to launch the unfollow mode
-var unfollow *bool
+	// Whether we want to launch the unfollow mode
+	unfollow bool
 
-// Acut
-var run *bool
+	// Acut
+	run bool
+
+	// Whether we want to have logging
+	logs bool
+
+	// Used to skip following, liking and commenting same user in this session
+	noduplicate bool
+)
 
 // An image will be liked if the poster has more followers than likeLowerLimit, and less than likeUpperLimit
 var likeLowerLimit int
@@ -76,17 +84,17 @@ func check(err error) {
 
 // Parses the options given to the script
 func parseOptions() {
-	run = flag.Bool("run", false, "Use this option to follow, like and comment")
-	unfollow = flag.Bool("sync", false, "Use this option to unfollow those who are not following back")
-	nomail = flag.Bool("nomail", false, "Use this option to disable the email notifications")
-	dev = flag.Bool("dev", false, "Use this option to use the script in development mode : nothing will be done for real")
-	logs := flag.Bool("logs", false, "Use this option to enable the logfile")
-	noduplicate = flag.Bool("noduplicate", false, "Use this option to skip following, liking and commenting same user in this session")
+	flag.BoolVar(&run, "run", false, "Use this option to follow, like and comment")
+	flag.BoolVar(&unfollow, "sync", false, "Use this option to unfollow those who are not following back")
+	flag.BoolVar(&nomail, "nomail", false, "Use this option to disable the email notifications")
+	flag.BoolVar(&dev, "dev", false, "Use this option to use the script in development mode : nothing will be done for real")
+	flag.BoolVar(&logs, "logs", false, "Use this option to enable the logfile")
+	flag.BoolVar(&noduplicate, "noduplicate", false, "Use this option to skip following, liking and commenting same user in this session")
 
 	flag.Parse()
 
 	// -logs enables the log file
-	if *logs {
+	if logs {
 		// Opens a log file
 		t := time.Now()
 		logFile, err := os.OpenFile("instabot-"+t.Format("2006-01-02-15-04-05")+".log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
@@ -102,7 +110,7 @@ func parseOptions() {
 // Gets the conf in the config file
 func getConfig() {
 	folder := "config"
-	if *dev {
+	if dev {
 		folder = "local"
 	}
 	viper.SetConfigFile(folder + "/config.json")
@@ -143,7 +151,7 @@ func getConfig() {
 
 // Sends an email. Check out the "mail" section of the "config.json" file.
 func send(body string, success bool) {
-	if !*nomail {
+	if !nomail {
 		from := viper.GetString("user.mail.from")
 		pass := viper.GetString("user.mail.password")
 		to := viper.GetString("user.mail.to")
