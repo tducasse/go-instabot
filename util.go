@@ -28,6 +28,9 @@ var (
 
 	// Whether we want to have logging
 	logs bool
+
+	// Used to skip following, liking and commenting same user in this session
+	noduplicate bool
 )
 
 // An image will be liked if the poster has more followers than likeLowerLimit, and less than likeUpperLimit
@@ -69,6 +72,9 @@ var numCommented int
 // Will hold the tag value
 var tag string
 
+// Whether it will check for duplicate profile in session
+var noduplicate *bool
+
 // check will log.Fatal if err is an error
 func check(err error) {
 	if err != nil {
@@ -83,6 +89,7 @@ func parseOptions() {
 	flag.BoolVar(&nomail, "nomail", false, "Use this option to disable the email notifications")
 	flag.BoolVar(&dev, "dev", false, "Use this option to use the script in development mode : nothing will be done for real")
 	flag.BoolVar(&logs, "logs", false, "Use this option to enable the logfile")
+	flag.BoolVar(&noduplicate, "noduplicate", false, "Use this option to skip following, liking and commenting same user in this session")
 
 	flag.Parse()
 
