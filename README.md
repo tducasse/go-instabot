@@ -1,5 +1,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Made with: Golang](https://img.shields.io/badge/Made%20with-Golang-brightgreen.svg)](https://golang.org/)
 
+### Not actively maintained, feel free to fork 👍
+
 # What is go-instabot?
 
 The easiest way to boost your Instagram account and get likes and followers.
