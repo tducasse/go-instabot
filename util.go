@@ -72,9 +72,6 @@ var numCommented int
 // Will hold the tag value
 var tag string
 
-// Whether it will check for duplicate profile in session
-var noduplicate *bool
-
 // check will log.Fatal if err is an error
 func check(err error) {
 	if err != nil {
