@@ -1,5 +1,13 @@
 package main
 
+import "github.com/ahmdrz/goinsta/v2"
+
+type MyInstabot struct {
+	Insta *goinsta.Instagram
+}
+
+var instabot MyInstabot
+
 func main() {
 	// Gets the command line options
 	parseOptions()
@@ -8,9 +16,9 @@ func main() {
 	// Tries to login
 	login()
 	if unfollow {
-		syncFollowers()
+		instabot.syncFollowers()
 	} else if run {
 		// Loop through tags ; follows, likes, and comments, according to the config file
-		loopTags()
+		instabot.loopTags()
 	}
 }
