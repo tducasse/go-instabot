@@ -149,3 +149,5 @@ Good luck getting new followers!
 ### ⚠️ Reporting issues/PRs/license
 This is _very_ loosely maintained, as in, I'll _probably_ try and fix things if everything is broken, but I'm no longer working on it. Feel free to fork it though!
 
+### Notes
+Comment is currently not working

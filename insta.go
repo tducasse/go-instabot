@@ -252,7 +252,7 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 					myInstabot.followUser(userInfo)
 				}
 				if comment {
-					commentImage(image)
+					//commentImage(image)
 				}
 			}
 		}
@@ -263,7 +263,7 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 	}
 }
 
-// Comments an image
+// Comments an image (currently not working)
 func commentImage(image goinsta.Item) {
 	rand.Seed(time.Now().Unix())
 	text := commentsList[rand.Intn(len(commentsList))]
