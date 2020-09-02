@@ -8,7 +8,7 @@ The easiest way to boost your Instagram account and get likes and followers.
 
 Go-instabot automates **following** users, **liking** pictures, **commenting**, and **unfollowing** people that don't follow you back on Instagram.
 
-It uses the unofficial but excellent Go Instagram API, [goinsta](https://github.com/ahmdrz/goinsta) (actually, a [frozen v1 fork](https://github.com/tducasse/goinsta)).
+It uses the unofficial but excellent Go Instagram API, [goinsta](https://github.com/ahmdrz/goinsta) (v2).
 
 ![Instabot demo gif](/docs/instabot.gif)
 
