@@ -8,6 +8,7 @@
 local/
 key
 session
+goinsta-session
 
 # Log files
 *.log
@@ -20,3 +21,6 @@ session
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
+
+# Vendor folder
+vendor/

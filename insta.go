@@ -4,24 +4,22 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
+	"reflect"
 	"strings"
 	"time"
+	"unsafe"
 
+	"github.com/ahmdrz/goinsta/v2"
 	"github.com/spf13/viper"
-	"github.com/tducasse/goinsta"
-	"github.com/tducasse/goinsta/response"
-	"github.com/tducasse/goinsta/store"
 )
-
-// Insta is a goinsta.Instagram instance
-var insta *goinsta.Instagram
 
 // Storing user in session
 var checkedUser = make(map[string]bool)
+
+var insta *goinsta.Instagram
 
 // login will try to reload a previous session, and will create a new one if it can't
 func login() {
@@ -31,13 +29,62 @@ func login() {
 	}
 }
 
-func syncFollowers() {
-	following, err := insta.SelfTotalUserFollowing()
-	check(err)
-	followers, err := insta.SelfTotalUserFollowers()
+// reloadSession will attempt to recover a previous session
+func reloadSession() error {
+
+	insta, err := goinsta.Import("./goinsta-session")
+	if err != nil {
+		return errors.New("Couldn't recover the session")
+	}
+
+	if insta != nil {
+		instabot.Insta = insta
+	}
+
+	log.Println("Successfully logged in")
+	return nil
+
+}
+
+// Logins and saves the session
+func createAndSaveSession() {
+	insta := goinsta.New(viper.GetString("user.instagram.username"), viper.GetString("user.instagram.password"))
+	instabot.Insta = insta
+	err := instabot.Insta.Login()
 	check(err)
 
-	var users []response.User
+	err = instabot.Insta.Export("./goinsta-session")
+	check(err)
+	log.Println("Created and saved the session")
+}
+
+func getInput(text string) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Printf(text)
+
+	input, err := reader.ReadString('\n')
+	check(err)
+	return strings.TrimSpace(input)
+}
+
+// Checks if the user is in the slice
+func contains(slice []goinsta.User, user goinsta.User) bool {
+	for _, currentUser := range slice {
+		if currentUser.Username == user.Username {
+			return true
+		}
+	}
+	return false
+}
+
+func (myInstabot MyInstabot) syncFollowers() {
+	following := myInstabot.Insta.Account.Following()
+	followers := myInstabot.Insta.Account.Followers()
+
+	following.Next()
+	followers.Next()
+
+	var users []goinsta.User
 	for _, user := range following.Users {
 		if !contains(followers.Users, user) {
 			users = append(users, user)
@@ -52,81 +99,31 @@ func syncFollowers() {
 	for _, user := range users {
 		fmt.Printf("Unfollowing %s\n", user.Username)
 		if !dev {
-			insta.UnFollow(user.ID)
+			user.Unfollow()
 		}
 		time.Sleep(6 * time.Second)
 	}
 }
 
-func getInput(text string) string {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf(text)
-
-	input, err := reader.ReadString('\n')
+// Follows a user, if not following already
+func (myInstabot MyInstabot) followUser(user *goinsta.User) {
+	log.Printf("Following %s\n", user.Username)
+	err := user.FriendShip()
 	check(err)
-	return strings.TrimSpace(input)
-}
-
-// Checks if the user is in the slice
-func contains(slice []response.User, user response.User) bool {
-	for _, currentUser := range slice {
-		if currentUser == user {
-			return true
+	// If not following already
+	if !user.Friendship.Following {
+		if !dev {
+			user.Follow()
 		}
+		log.Println("Followed")
+		numFollowed++
+		report[line{tag, "follow"}]++
+	} else {
+		log.Println("Already following " + user.Username)
 	}
-	return false
 }
 
-// Logins and saves the session
-func createAndSaveSession() {
-	insta = goinsta.New(viper.GetString("user.instagram.username"), viper.GetString("user.instagram.password"))
-	err := insta.Login()
-	check(err)
-
-	key := createKey()
-	bytes, err := store.Export(insta, key)
-	check(err)
-	err = ioutil.WriteFile("session", bytes, 0644)
-	check(err)
-	log.Println("Created and saved the session")
-}
-
-// reloadSession will attempt to recover a previous session
-func reloadSession() error {
-	if _, err := os.Stat("session"); os.IsNotExist(err) {
-		return errors.New("No session found")
-	}
-
-	session, err := ioutil.ReadFile("session")
-	check(err)
-	log.Println("A session file exists")
-
-	key, err := ioutil.ReadFile("key")
-	check(err)
-
-	insta, err = store.Import(session, key)
-	if err != nil {
-		return errors.New("Couldn't recover the session")
-	}
-
-	log.Println("Successfully logged in")
-	return nil
-
-}
-
-// createKey creates a key and saves it to file
-func createKey() []byte {
-	key := make([]byte, 32)
-	_, err := rand.Read(key)
-	check(err)
-	err = ioutil.WriteFile("key", key, 0644)
-	check(err)
-	log.Println("Created and saved the key")
-	return key
-}
-
-// Go through all the tags in the list
-func loopTags() {
+func (myInstabot MyInstabot) loopTags() {
 	for tag = range tagsList {
 		limitsConf := viper.GetStringMap("tags." + tag)
 		// Some converting
@@ -140,13 +137,27 @@ func loopTags() {
 		numLiked = 0
 		numCommented = 0
 
-		browse()
+		myInstabot.browse()
 	}
 	buildReport()
 }
 
-// Browses the page for a certain tag, until we reach the limits
-func browse() {
+// Likes an image, if not liked already
+func (myInstabot MyInstabot) likeImage(image goinsta.Item) {
+	log.Println("Liking the picture")
+	if !image.HasLiked {
+		if !dev {
+			image.Like()
+		}
+		log.Println("Liked")
+		numLiked++
+		report[line{tag, "like"}]++
+	} else {
+		log.Println("Image already liked")
+	}
+}
+
+func (myInstabot MyInstabot) browse() {
 	var i = 0
 	for numFollowed < limits["follow"] || numLiked < limits["like"] || numCommented < limits["comment"] {
 		log.Println("Fetching the list of images for #" + tag + "\n")
@@ -155,14 +166,14 @@ func browse() {
 		// Getting all the pictures we can on the first page
 		// Instagram will return a 500 sometimes, so we will retry 10 times.
 		// Check retry() for more info.
-		var images response.TagFeedsResponse
+		var images *goinsta.FeedTag
 		err := retry(10, 20*time.Second, func() (err error) {
-			images, err = insta.TagFeed(tag)
+			images, err = myInstabot.Insta.Feed.Tags(tag)
 			return
 		})
 		check(err)
 
-		goThrough(images)
+		myInstabot.goThrough(images)
 
 		if viper.IsSet("limits.maxRetry") && i > viper.GetInt("limits.maxRetry") {
 			log.Println("Currently not enough images for this tag to achieve goals")
@@ -172,9 +183,11 @@ func browse() {
 }
 
 // Goes through all the images for a certain tag
-func goThrough(images response.TagFeedsResponse) {
-	var i = 1
-	for _, image := range images.FeedsResponse.Items {
+func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
+	var i = 0
+
+	// do for other too
+	for _, image := range images.Images {
 		// Exiting the loop if there is nothing left to do
 		if numFollowed >= limits["follow"] && numLiked >= limits["like"] && numCommented >= limits["comment"] {
 			break
@@ -198,21 +211,21 @@ func goThrough(images response.TagFeedsResponse) {
 		// Getting the user info
 		// Instagram will return a 500 sometimes, so we will retry 10 times.
 		// Check retry() for more info.
-		var posterInfo response.GetUsernameResponse
+
+		var userInfo *goinsta.User
 		err := retry(10, 20*time.Second, func() (err error) {
-			posterInfo, err = insta.GetUserByUsername(image.User.Username)
+			userInfo, err = myInstabot.Insta.Profiles.ByName(image.User.Username)
 			return
 		})
 		check(err)
 
-		poster := posterInfo.User
-		followerCount := poster.FollowerCount
+		followerCount := userInfo.FollowerCount
 
 		buildLine()
 
-		checkedUser[poster.Username] = true
-		log.Println("Checking followers for " + poster.Username + " - for #" + tag)
-		log.Printf("%s has %d followers\n", poster.Username, followerCount)
+		checkedUser[userInfo.Username] = true
+		log.Println("Checking followers for " + userInfo.Username + " - for #" + tag)
+		log.Printf("%s has %d followers\n", userInfo.Username, followerCount)
 		i++
 
 		// Will only follow and comment if we like the picture
@@ -222,11 +235,12 @@ func goThrough(images response.TagFeedsResponse) {
 
 		// Checking if we are already following current user and skipping if we do
 		skip := false
-		following, err := insta.SelfTotalUserFollowing()
-		check(err)
+		following := myInstabot.Insta.Account.Following()
+
+		following.Next()
 
 		for _, user := range following.Users {
-			if user.Username == poster.Username {
+			if user.Username == userInfo.Username {
 				skip = true
 				break
 			}
@@ -235,64 +249,46 @@ func goThrough(images response.TagFeedsResponse) {
 		// Like, then comment/follow
 		if !skip {
 			if like {
-				likeImage(image)
+				myInstabot.likeImage(image)
 				if follow {
-					followUser(posterInfo)
+					myInstabot.followUser(userInfo)
 				}
 				if comment {
-					commentImage(image)
+					myInstabot.commentImage(image)
 				}
 			}
 		}
-		log.Printf("%s done\n\n", poster.Username)
+		log.Printf("%s done\n\n", userInfo.Username)
 
 		// This is to avoid the temporary ban by Instagram
 		time.Sleep(20 * time.Second)
 	}
 }
 
-// Likes an image, if not liked already
-func likeImage(image response.MediaItemResponse) {
-	log.Println("Liking the picture")
-	if !image.HasLiked {
-		if !dev {
-			insta.Like(image.ID)
-		}
-		log.Println("Liked")
-		numLiked++
-		report[line{tag, "like"}]++
-	} else {
-		log.Println("Image already liked")
-	}
-}
-
-// Comments an image
-func commentImage(image response.MediaItemResponse) {
+// Comments an image (currently not working)
+func (myInstabot MyInstabot) commentImage(image goinsta.Item) {
 	rand.Seed(time.Now().Unix())
 	text := commentsList[rand.Intn(len(commentsList))]
 	if !dev {
-		insta.Comment(image.ID, text)
+		comments := image.Comments
+		if comments == nil {
+			// monkey patching
+			// we need to do that because https://github.com/ahmdrz/goinsta/pull/299 is not in goinsta/v2
+			// I know, it's ugly
+			newComments := goinsta.Comments{}
+			rs := reflect.ValueOf(&newComments).Elem()
+			rf := rs.FieldByName("item")
+			rf = reflect.NewAt(rf.Type(), unsafe.Pointer(rf.UnsafeAddr())).Elem()
+			item := reflect.New(reflect.TypeOf(image))
+			item.Elem().Set(reflect.ValueOf(image))
+			rf.Set(item)
+			newComments.Add(text)
+			// end hack!
+		} else {
+			comments.Add(text)
+		}
 	}
 	log.Println("Commented " + text)
 	numCommented++
 	report[line{tag, "comment"}]++
-}
-
-// Follows a user, if not following already
-func followUser(userInfo response.GetUsernameResponse) {
-	user := userInfo.User
-	log.Printf("Following %s\n", user.Username)
-	userFriendShip, err := insta.UserFriendShip(user.ID)
-	check(err)
-	// If not following already
-	if !userFriendShip.Following {
-		if !dev {
-			insta.Follow(user.ID)
-		}
-		log.Println("Followed")
-		numFollowed++
-		report[line{tag, "follow"}]++
-	} else {
-		log.Println("Already following " + user.Username)
-	}
 }
