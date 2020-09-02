@@ -7,8 +7,10 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"reflect"
 	"strings"
 	"time"
+	"unsafe"
 
 	"github.com/ahmdrz/goinsta/v2"
 	"github.com/spf13/viper"
@@ -182,7 +184,7 @@ func (myInstabot MyInstabot) browse() {
 
 // Goes through all the images for a certain tag
 func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
-	var i = 1
+	var i = 0
 
 	// do for other too
 	for _, image := range images.Images {
@@ -252,7 +254,7 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 					myInstabot.followUser(userInfo)
 				}
 				if comment {
-					//commentImage(image)
+					myInstabot.commentImage(image)
 				}
 			}
 		}
@@ -264,11 +266,27 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 }
 
 // Comments an image (currently not working)
-func commentImage(image goinsta.Item) {
+func (myInstabot MyInstabot) commentImage(image goinsta.Item) {
 	rand.Seed(time.Now().Unix())
 	text := commentsList[rand.Intn(len(commentsList))]
 	if !dev {
-		image.Comments.Add(text)
+		comments := image.Comments
+		if comments == nil {
+			// monkey patching
+			// we need to do that because https://github.com/ahmdrz/goinsta/pull/299 is not in goinsta/v2
+			// I know, it's ugly
+			newComments := goinsta.Comments{}
+			rs := reflect.ValueOf(&newComments).Elem()
+			rf := rs.FieldByName("item")
+			rf = reflect.NewAt(rf.Type(), unsafe.Pointer(rf.UnsafeAddr())).Elem()
+			item := reflect.New(reflect.TypeOf(image))
+			item.Elem().Set(reflect.ValueOf(image))
+			rf.Set(item)
+			newComments.Add(text)
+			// end hack!
+		} else {
+			comments.Add(text)
+		}
 	}
 	log.Println("Commented " + text)
 	numCommented++
