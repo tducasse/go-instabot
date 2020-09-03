@@ -2,6 +2,7 @@ package main
 
 import "github.com/ahmdrz/goinsta/v2"
 
+// MyInstabot is a wrapper around everything
 type MyInstabot struct {
 	Insta *goinsta.Instagram
 }
