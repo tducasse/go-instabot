@@ -68,9 +68,30 @@ func getInput(text string) string {
 }
 
 // Checks if the user is in the slice
-func contains(slice []goinsta.User, user goinsta.User) bool {
+func containsUser(slice []goinsta.User, user goinsta.User) bool {
 	for _, currentUser := range slice {
+		fmt.Println(currentUser.Username)
+		fmt.Println(user.Username)
 		if currentUser.Username == user.Username {
+			return true
+		}
+	}
+	return false
+}
+
+func getInputf(format string, args ...interface{}) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Printf(format, args...)
+
+	input, err := reader.ReadString('\n')
+	check(err)
+	return strings.TrimSpace(input)
+}
+
+// Same, with strings
+func containsString(slice []string, user string) bool {
+	for _, currentUser := range slice {
+		if currentUser == user {
 			return true
 		}
 	}
@@ -86,18 +107,38 @@ func (myInstabot MyInstabot) syncFollowers() {
 
 	var users []goinsta.User
 	for _, user := range following.Users {
-		if !contains(followers.Users, user) {
+		// Skip whitelisted users.
+		if containsString(userWhitelist, user.Username) {
+			continue
+		}
+
+		if !containsUser(followers.Users, user) {
 			users = append(users, user)
 		}
 	}
+	if len(users) == 0 {
+		return
+	}
 	fmt.Printf("\n%d users are not following you back!\n", len(users))
-	answer := getInput("Do you want to unfollow these users? [yN]")
+	answer := getInput("Do you want to review these users ? [yN]")
 	if answer != "y" {
 		fmt.Println("Not unfollowing.")
 		os.Exit(0)
 	}
+
+	answerUnfollowAll := getInput("Unfollow everyone ? [yN]")
+
 	for _, user := range users {
-		fmt.Printf("Unfollowing %s\n", user.Username)
+		if answerUnfollowAll != "y" {
+			answerUserUnfollow := getInputf("Unfollow %s ? [yN]", user.Username)
+			if answerUserUnfollow != "y" {
+				userWhitelist = append(userWhitelist, user.Username)
+				continue
+			}
+		}
+
+		userBlacklist = append(userBlacklist, user.Username)
+
 		if !dev {
 			user.Unfollow()
 		}
@@ -250,7 +291,7 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 		if !skip {
 			if like {
 				myInstabot.likeImage(image)
-				if follow {
+				if follow && !containsString(userBlacklist, userInfo.Username) {
 					myInstabot.followUser(userInfo)
 				}
 				if comment {
@@ -291,4 +332,17 @@ func (myInstabot MyInstabot) commentImage(image goinsta.Item) {
 	log.Println("Commented " + text)
 	numCommented++
 	report[line{tag, "comment"}]++
+}
+
+func (myInstabot MyInstabot) updateConfig() {
+	viper.Set("whitelist", userWhitelist)
+	viper.Set("blacklist", userBlacklist)
+
+	err := viper.WriteConfig()
+	if err != nil {
+		log.Println("Update config file error", err)
+		return
+	}
+
+	log.Println("Config file updated")
 }

@@ -1,47 +1,49 @@
 {
-    "user" : {
-        "instagram" : {
-            "username" : "foobar",         
-            "password" : "fooBAR"          
+    "user": {
+        "instagram": {
+            "username": "foobar",
+            "password": "fooBAR"
         },
-        "mail" : {
-            "from" : "foo@bar.foo",        
-            "password" : "foOb@r",          
-            "to" : "bar@foo.bar",           
-            "smtp" : "smtp.gmail.com:587",  
-            "server" : "smtp.gmail.com"     
+        "mail": {
+            "from": "foo@bar.foo",
+            "password": "foOb@r",
+            "to": "bar@foo.bar",
+            "smtp": "smtp.gmail.com:587",
+            "server": "smtp.gmail.com"
         }
     },
-    "limits" : {     
-        "maxRetry" : 2,
-        "like" : {                          
-            "min" : 0,                      
-            "max" : 10000                   
+    "limits": {
+        "maxRetry": 2,
+        "like": {
+            "min": 0,
+            "max": 10000
         },
-        "comment" : {                     
-            "min" : 100,                  
-            "max" : 10000                 
+        "comment": {
+            "min": 100,
+            "max": 10000
         },
-        "follow" : {                        
-            "min" : 200,                    
-            "max" : 10000                   
+        "follow": {
+            "min": 200,
+            "max": 10000
         }
     },
-    "tags" : {                              
-        "dog" : {                           
-            "like" : 3,                     
-            "comment" : 2,                  
-            "follow" : 1                    
+    "tags": {
+        "dog": {
+            "like": 3,
+            "comment": 2,
+            "follow": 1
         },
-        "cat" : {                           
-            "like" : 3,
-            "comment" : 2,
-            "follow" : 1
-        }                                   
+        "cat": {
+            "like": 3,
+            "comment": 2,
+            "follow": 1
+        }
     },
-    "comments" : [                          
-        "awesome",                          
-        "wow",                              
-        "nice pic"                          
-    ]
+    "comments": [
+        "awesome",
+        "wow",
+        "nice pic"
+    ],
+    "blacklist": [],
+    "whitelist": []
 }

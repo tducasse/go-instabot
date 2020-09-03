@@ -64,6 +64,9 @@ type line struct {
 // Report that will be sent at the end of the script
 var report map[line]int
 
+var userBlacklist []string
+var userWhitelist []string
+
 // Counters that will be incremented while we like, comment, and follow
 var numFollowed int
 var numLiked int
@@ -138,6 +141,9 @@ func getConfig() {
 	tagsList = viper.GetStringMap("tags")
 
 	commentsList = viper.GetStringSlice("comments")
+
+	userBlacklist = viper.GetStringSlice("blacklist")
+	userWhitelist = viper.GetStringSlice("whitelist")
 
 	type Report struct {
 		Tag, Action string

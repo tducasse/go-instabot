@@ -96,9 +96,21 @@ There, in the 'dist/' folder, you will find a sample 'config.json', that you hav
         "awesome",                          // again, add as many as you want
         "wow",                              // it will randomly choose one 
         "nice pic"                          // each time it has to put a comment
-    ]
+    ],
+    "blacklist" : [                         // a list of users you don't want to follow
+        "foo",                          
+        "bar",                              // the scripts prompts you to choose whether to unfollow them or not
+        "foobar",                           // when you use -sync
+        "barfoo"                            // This list will be updated at the end of the script.
+    ],
+    "whitelist" : [                         // a list of users you don't want to unfollow
+        "boo",                          
+        "far",                              // it adds them to the whitelist if you choose to answer "No" (N)
+        "boofar",                           // the scripts prompts you to choose whether to unfollow them or not
+        "farboo"                            // This list will be updated at the end of the script.
+    ]                                       // The list might become obsolete as username is easily changeable by user.
 }
-```
+```	
 
 ### Note on the emails
 
