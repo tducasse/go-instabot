@@ -60,7 +60,7 @@ func createAndSaveSession() {
 
 func getInput(text string) string {
 	reader := bufio.NewReader(os.Stdin)
-
+	fmt.Printf(text)
 	input, err := reader.ReadString('\n')
 	check(err)
 	return strings.TrimSpace(input)
@@ -78,7 +78,7 @@ func containsUser(slice []goinsta.User, user goinsta.User) bool {
 
 func getInputf(format string, args ...interface{}) string {
 	reader := bufio.NewReader(os.Stdin)
-
+	fmt.Printf(format, args...)
 	input, err := reader.ReadString('\n')
 	check(err)
 	return strings.TrimSpace(input)
@@ -285,9 +285,14 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 		skip := false
 		following := myInstabot.Insta.Account.Following()
 
-		following.Next()
+		var followingUsers []goinsta.User
+		for following.Next() {
+			for _, user := range following.Users {
+				followingUsers = append(followingUsers, user)
+			}
+		}
 
-		for _, user := range following.Users {
+		for _, user := range followingUsers {
 			if user.Username == userInfo.Username {
 				skip = true
 				break
