@@ -60,7 +60,6 @@ func createAndSaveSession() {
 
 func getInput(text string) string {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf(text)
 
 	input, err := reader.ReadString('\n')
 	check(err)
@@ -70,8 +69,6 @@ func getInput(text string) string {
 // Checks if the user is in the slice
 func containsUser(slice []goinsta.User, user goinsta.User) bool {
 	for _, currentUser := range slice {
-		fmt.Println(currentUser.Username)
-		fmt.Println(user.Username)
 		if currentUser.Username == user.Username {
 			return true
 		}
@@ -81,7 +78,6 @@ func containsUser(slice []goinsta.User, user goinsta.User) bool {
 
 func getInputf(format string, args ...interface{}) string {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf(format, args...)
 
 	input, err := reader.ReadString('\n')
 	check(err)
@@ -102,17 +98,28 @@ func (myInstabot MyInstabot) syncFollowers() {
 	following := myInstabot.Insta.Account.Following()
 	followers := myInstabot.Insta.Account.Followers()
 
-	following.Next()
-	followers.Next()
+	var followerUsers []goinsta.User
+	var followingUsers []goinsta.User
+
+	for following.Next() {
+		for _, user := range following.Users {
+			followingUsers = append(followingUsers, user)
+		}
+	}
+	for followers.Next() {
+		for _, user := range followers.Users {
+			followerUsers = append(followerUsers, user)
+		}
+	}
 
 	var users []goinsta.User
-	for _, user := range following.Users {
+	for _, user := range followingUsers {
 		// Skip whitelisted users.
 		if containsString(userWhitelist, user.Username) {
 			continue
 		}
 
-		if !containsUser(followers.Users, user) {
+		if !containsUser(followerUsers, user) {
 			users = append(users, user)
 		}
 	}
@@ -306,7 +313,7 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 	}
 }
 
-// Comments an image (currently not working)
+// Comments an image
 func (myInstabot MyInstabot) commentImage(image goinsta.Item) {
 	rand.Seed(time.Now().Unix())
 	text := commentsList[rand.Intn(len(commentsList))]
