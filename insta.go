@@ -12,7 +12,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/ahmdrz/goinsta/v2"
+	"github.com/Davincible/goinsta"
 	"github.com/spf13/viper"
 )
 
@@ -103,12 +103,12 @@ func (myInstabot MyInstabot) syncFollowers() {
 
 	for following.Next() {
 		for _, user := range following.Users {
-			followingUsers = append(followingUsers, user)
+			followingUsers = append(followingUsers, *user)
 		}
 	}
 	for followers.Next() {
 		for _, user := range followers.Users {
-			followerUsers = append(followerUsers, user)
+			followerUsers = append(followerUsers, *user)
 		}
 	}
 
@@ -156,8 +156,6 @@ func (myInstabot MyInstabot) syncFollowers() {
 // Follows a user, if not following already
 func (myInstabot MyInstabot) followUser(user *goinsta.User) {
 	log.Printf("Following %s\n", user.Username)
-	err := user.FriendShip()
-	check(err)
 	// If not following already
 	if !user.Friendship.Following {
 		if !dev {
@@ -233,9 +231,8 @@ func (myInstabot MyInstabot) browse() {
 // Goes through all the images for a certain tag
 func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 	var i = 0
-
 	// do for other too
-	for _, image := range images.Images {
+	for _, image := range images.Items {
 		// Exiting the loop if there is nothing left to do
 		if numFollowed >= limits["follow"] && numLiked >= limits["like"] && numCommented >= limits["comment"] {
 			break
@@ -288,7 +285,7 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 		var followingUsers []goinsta.User
 		for following.Next() {
 			for _, user := range following.Users {
-				followingUsers = append(followingUsers, user)
+				followingUsers = append(followingUsers, *user)
 			}
 		}
 
@@ -302,12 +299,12 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 		// Like, then comment/follow
 		if !skip {
 			if like {
-				myInstabot.likeImage(image)
+				myInstabot.likeImage(*image)
 				if follow && !containsString(userBlacklist, userInfo.Username) {
 					myInstabot.followUser(userInfo)
 				}
 				if comment {
-					myInstabot.commentImage(image)
+					myInstabot.commentImage(*image)
 				}
 			}
 		}

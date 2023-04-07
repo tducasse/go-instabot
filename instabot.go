@@ -1,6 +1,6 @@
 package main
 
-import "github.com/ahmdrz/goinsta/v2"
+import "github.com/Davincible/goinsta"
 
 // MyInstabot is a wrapper around everything
 type MyInstabot struct {
