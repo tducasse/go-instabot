@@ -12,7 +12,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/Davincible/goinsta"
+	"github.com/Davincible/goinsta/v3"
 	"github.com/spf13/viper"
 )
 
@@ -95,8 +95,8 @@ func containsString(slice []string, user string) bool {
 }
 
 func (myInstabot MyInstabot) syncFollowers() {
-	following := myInstabot.Insta.Account.Following()
-	followers := myInstabot.Insta.Account.Followers()
+	following := myInstabot.Insta.Account.Following("", goinsta.DefaultOrder)
+	followers := myInstabot.Insta.Account.Followers("")
 
 	var followerUsers []goinsta.User
 	var followingUsers []goinsta.User
@@ -280,7 +280,7 @@ func (myInstabot MyInstabot) goThrough(images *goinsta.FeedTag) {
 
 		// Checking if we are already following current user and skipping if we do
 		skip := false
-		following := myInstabot.Insta.Account.Following()
+		following := myInstabot.Insta.Account.Following("", goinsta.DefaultOrder)
 
 		var followingUsers []goinsta.User
 		for following.Next() {
